@@ -1,4 +1,4 @@
-// Firebase Konfiguration
+// Firebase Konfiguration (eigene Werte einfügen)
 const firebaseConfig = {
   apiKey: "DEIN_API_KEY",
   authDomain: "DEIN_PROJECT.firebaseapp.com",
@@ -88,69 +88,88 @@ const essensplan = [
     "Tag 2 Abendessen: Eintopf / Chili"
 ];
 
-// Rezepte
+// Rezepte (Beispiel)
 const rezepte = [
     "Couscous-Salat: 500 g Couscous, 1,5 kg Gemüse, Olivenöl, Zitrone, Gewürze",
     "Wraps: 12 Wraps, 2 Dosen Bohnen, 500 g Salat, 1 Glas Salsa",
     "Gegrillte Würstchen & Gemüse: 12 vegane Würstchen, 2 kg Gemüse, 1,5 kg Kartoffeln",
-    "Eintopf / Chili: 500 g Linsen, 3 Dosen Kidneybohnen, 2 Dosen Mais, 2 Gläser Tomatenstücke, Gewürze"
+    "Eintopf / Chili: 500 g Linsen, 2 Gläser Tomatenstücke, 1 kg Gemüse"
 ];
 
-// Packliste laden
-if(document.getElementById("packliste")){
-    const listEl = document.getElementById("packliste");
+let currentName = "";
+
+// Name bestätigen
+document.getElementById("confirmName")?.addEventListener("click", () => {
     const nameInput = document.getElementById("name");
+    currentName = nameInput.value || "Unbenannt";
+    alert("Name bestätigt: " + currentName);
+    loadPacklist();
+});
 
-    packlisteItems.forEach((item, index) => {
-        const li = document.createElement("li");
-        li.textContent = item;
-        li.onclick = () => toggleItem(index, li, nameInput.value);
-        listEl.appendChild(li);
-    });
+// Packliste laden
+function loadPacklist() {
+    const ul = document.getElementById("packliste");
+    if (!ul) return;
 
-    function toggleItem(index, li, name){
-        if(!name) {
-            alert("Bitte zuerst deinen Namen eingeben!");
-            return;
+    db.ref("packliste").once("value").then(snapshot => {
+        let items = snapshot.val();
+        if (!items) {
+            // Erstes Mal: Standardliste speichern
+            items = packlisteItems.map(i => ({ text: i, completed: false, name: "" }));
+            db.ref("packliste").set(items);
         }
-        const completed = li.classList.toggle("completed");
-        // Firebase speichern
-        db.ref('packliste/' + name + '/' + index).set({item: packlisteItems[index], completed});
-    }
 
-    // Firebase laden
-    nameInput.addEventListener("blur", () => {
-        const name = nameInput.value;
-        if(!name) return;
-        db.ref('packliste/' + name).once("value", snapshot => {
-            const data = snapshot.val();
-            if(data){
-                Object.keys(data).forEach(i => {
-                    if(data[i].completed){
-                        listEl.children[i].classList.add("completed");
-                    }
-                });
-            }
+        ul.innerHTML = "";
+        items.forEach((item, index) => {
+            const li = document.createElement("li");
+            li.innerText = item.completed ? `${item.text} - ${item.name}` : item.text;
+            if (item.completed) li.classList.add("completed");
+
+            li.addEventListener("click", () => {
+                if (!currentName) return alert("Bitte erst deinen Namen bestätigen!");
+                item.completed = !item.completed;
+                item.name = item.completed ? currentName : "";
+                li.classList.toggle("completed");
+                li.innerText = item.completed ? `${item.text} - ${item.name}` : item.text;
+                savePacklist(items);
+            });
+
+            ul.appendChild(li);
         });
     });
 }
 
-// Essensplan laden
-if(document.getElementById("essensplan")){
-    const listEl = document.getElementById("essensplan");
-    essensplan.forEach(item => {
+function savePacklist(items) {
+    db.ref("packliste").set(items);
+}
+
+// Essensplan rendern
+function loadEssensplan() {
+    const ul = document.getElementById("essensplan");
+    if (!ul) return;
+    ul.innerHTML = "";
+    essensplan.forEach(meal => {
         const li = document.createElement("li");
-        li.textContent = item;
-        listEl.appendChild(li);
+        li.innerText = meal;
+        ul.appendChild(li);
     });
 }
 
-// Rezepte laden
-if(document.getElementById("rezepte")){
-    const listEl = document.getElementById("rezepte");
-    rezepte.forEach(item => {
+// Rezepte rendern
+function loadRezepte() {
+    const ul = document.getElementById("rezepte");
+    if (!ul) return;
+    ul.innerHTML = "";
+    rezepte.forEach(recipe => {
         const li = document.createElement("li");
-        li.textContent = item;
-        listEl.appendChild(li);
+        li.innerText = recipe;
+        ul.appendChild(li);
     });
 }
+
+// Automatisch Essensplan oder Rezepte laden, falls relevant
+document.addEventListener("DOMContentLoaded", () => {
+    loadPacklist();
+    loadEssensplan();
+    loadRezepte();
+});
