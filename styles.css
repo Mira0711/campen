@@ -1,35 +1,25 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f8ff;
-  margin: 20px;
+  padding: 20px;
+  background: #f9f9f9;
 }
 
 h1 {
   text-align: center;
-  color: #2e8b57;
 }
 
 ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
-  max-width: 500px;
-  margin: 20px auto;
 }
 
 li {
-  padding: 10px;
+  background: #fff;
   margin: 5px 0;
-  background-color: #fff;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-li:hover {
-  background-color: #e0f7fa;
+  transition: all 0.2s ease;
 }
 
 li.checked {
@@ -37,52 +27,30 @@ li.checked {
   opacity: 0.6;
 }
 
-#nameInputContainer {
-  text-align: center;
+.buttons {
   margin-top: 20px;
-}
-
-#userName {
-  padding: 8px;
-  width: 200px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-table {
-  margin: 20px auto;
-  border-collapse: collapse;
-  width: 90%;
-  max-width: 700px;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px;
   text-align: center;
 }
 
-th {
-  background-color: #2e8b57;
-  color: white;
-}
-
-.nav-buttons {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.nav-buttons button {
+button {
   padding: 10px 20px;
   margin: 5px;
   border: none;
-  background-color: #2e8b57;
-  color: white;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.3s;
+  background: #4caf50;
+  color: white;
+  font-size: 16px;
+  transition: all 0.2s ease;
 }
 
-.nav-buttons button:hover {
-  background-color: #3cb371;
+button:hover {
+  background: #45a049;
+}
+
+input#userName {
+  display: block;
+  margin: 10px auto 20px auto;
+  padding: 8px;
+  font-size: 16px;
 }

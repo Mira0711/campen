@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Camping-Packliste 🏕️</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camping Packliste</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Camping-Packliste 🏕️</h1>
-  <ul id="packliste"></ul>
+<h1>Camping Packliste für 6 Personen</h1>
 
-  <div id="nameInputContainer">
-    <input type="text" id="userName" placeholder="Dein Name">
-    <small>Trage hier deinen Namen ein, bevor du abhaken willst</small>
-  </div>
+<label for="userName">Dein Name:</label>
+<input type="text" id="userName" placeholder="Name eingeben">
 
-  <div class="nav-buttons">
-    <button onclick="window.location.href='essensplan.html'">Essensplan ansehen</button>
-    <button onclick="window.location.href='rezepte.html'">Rezepte ansehen</button>
-  </div>
+<ul id="packliste"></ul>
 
-  <script type="module" src="index.js"></script>
+<div class="buttons">
+  <a href="essen.html"><button>Essensplan</button></a>
+  <a href="rezepte.html"><button>Rezepte</button></a>
+</div>
+
+<script type="module" src="index.js"></script>
 </body>
 </html>
