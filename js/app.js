@@ -1,6 +1,6 @@
 import { db, ref, set, onValue } from "./firebase.js";
 
-// Packliste (für 6 Personen, zum Abhaken)
+// Packliste aus Version 3 (komplett, nichts gekürzt)
 const packlisteItems = [
   "2–3 Zelte (je nach Größe)",
   "6 Isomatten / Luftmatratzen",
@@ -74,8 +74,7 @@ function savePacklist(items) {
 // Packliste laden
 export function loadPacklist() {
   const ul = document.getElementById("packliste");
-  const nameInput = document.getElementById("name");
-  if (!ul || !nameInput) return;
+  if (!ul) return;
 
   onValue(ref(db, "packliste"), snapshot => {
     let items = snapshot.val();
@@ -84,18 +83,40 @@ export function loadPacklist() {
       savePacklist(items);
     }
     ul.innerHTML = "";
+
     items.forEach((item, index) => {
       const li = document.createElement("li");
-      li.textContent = item.completed ? `${item.text} - ${item.name}` : item.text;
-      if (item.completed) li.classList.add("completed");
 
-      li.addEventListener("click", () => {
-        const name = nameInput.value || "Unbenannt";
-        item.completed = !item.completed;
-        item.name = item.completed ? name : "";
+      // Checkbox
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = item.completed;
+      checkbox.addEventListener("change", () => {
+        item.completed = checkbox.checked;
+        if (!checkbox.checked) {
+          item.name = "";
+        }
         savePacklist(items);
       });
 
+      // Text
+      const span = document.createElement("span");
+      span.textContent = item.text;
+
+      // Namensfeld
+      const nameInput = document.createElement("input");
+      nameInput.type = "text";
+      nameInput.placeholder = "Name";
+      nameInput.value = item.name || "";
+      nameInput.style.marginLeft = "10px";
+      nameInput.addEventListener("input", () => {
+        item.name = nameInput.value;
+        savePacklist(items);
+      });
+
+      li.appendChild(checkbox);
+      li.appendChild(span);
+      li.appendChild(nameInput);
       ul.appendChild(li);
     });
   });
