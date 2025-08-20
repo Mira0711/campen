@@ -12,6 +12,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
+let currentName = "";
+
 // Packliste Version 1
 const packlisteItems = [
     "2–3 Zelte (je nach Größe)",
@@ -88,25 +90,15 @@ const essensplan = [
     "Tag 2 Abendessen: Eintopf / Chili"
 ];
 
-// Rezepte (Beispiel)
+// Rezepte
 const rezepte = [
     "Couscous-Salat: 500 g Couscous, 1,5 kg Gemüse, Olivenöl, Zitrone, Gewürze",
-    "Wraps: 12 Wraps, 2 Dosen Bohnen, 500 g Salat, 1 Glas Salsa",
-    "Gegrillte Würstchen & Gemüse: 12 vegane Würstchen, 2 kg Gemüse, 1,5 kg Kartoffeln",
-    "Eintopf / Chili: 500 g Linsen, 2 Gläser Tomatenstücke, 1 kg Gemüse"
+    "Wraps: 12 Wraps, 2 Dosen Bohnen, 500 g Salat, Salsa",
+    "Gegrilltes Gemüse: 2 kg Gemüse, 2 EL Olivenöl, Gewürze",
+    "Chili-Eintopf: 500 g Linsen, 2 Gläser Tomatenstücke, 500 g Gemüse, Gewürze"
 ];
 
-let currentName = "";
-
-// Name bestätigen
-document.getElementById("confirmName")?.addEventListener("click", () => {
-    const nameInput = document.getElementById("name");
-    currentName = nameInput.value || "Unbenannt";
-    alert("Name bestätigt: " + currentName);
-    loadPacklist();
-});
-
-// Packliste laden
+// Funktionen
 function loadPacklist() {
     const ul = document.getElementById("packliste");
     if (!ul) return;
@@ -114,28 +106,33 @@ function loadPacklist() {
     db.ref("packliste").once("value").then(snapshot => {
         let items = snapshot.val();
         if (!items) {
-            // Erstes Mal: Standardliste speichern
             items = packlisteItems.map(i => ({ text: i, completed: false, name: "" }));
             db.ref("packliste").set(items);
         }
+        renderPacklist(items);
+    });
+}
 
-        ul.innerHTML = "";
-        items.forEach((item, index) => {
-            const li = document.createElement("li");
+function renderPacklist(items) {
+    const ul = document.getElementById("packliste");
+    if (!ul) return;
+    ul.innerHTML = "";
+
+    items.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerText = item.completed ? `${item.text} - ${item.name}` : item.text;
+        if (item.completed) li.classList.add("completed");
+
+        li.addEventListener("click", () => {
+            if (!currentName) return alert("Bitte erst deinen Namen bestätigen!");
+            item.completed = !item.completed;
+            item.name = item.completed ? currentName : "";
+            li.classList.toggle("completed");
             li.innerText = item.completed ? `${item.text} - ${item.name}` : item.text;
-            if (item.completed) li.classList.add("completed");
-
-            li.addEventListener("click", () => {
-                if (!currentName) return alert("Bitte erst deinen Namen bestätigen!");
-                item.completed = !item.completed;
-                item.name = item.completed ? currentName : "";
-                li.classList.toggle("completed");
-                li.innerText = item.completed ? `${item.text} - ${item.name}` : item.text;
-                savePacklist(items);
-            });
-
-            ul.appendChild(li);
+            savePacklist(items);
         });
+
+        ul.appendChild(li);
     });
 }
 
@@ -143,31 +140,36 @@ function savePacklist(items) {
     db.ref("packliste").set(items);
 }
 
-// Essensplan rendern
 function loadEssensplan() {
     const ul = document.getElementById("essensplan");
     if (!ul) return;
+
     ul.innerHTML = "";
-    essensplan.forEach(meal => {
+    essensplan.forEach(plan => {
         const li = document.createElement("li");
-        li.innerText = meal;
+        li.innerText = plan;
         ul.appendChild(li);
     });
 }
 
-// Rezepte rendern
 function loadRezepte() {
     const ul = document.getElementById("rezepte");
     if (!ul) return;
+
     ul.innerHTML = "";
-    rezepte.forEach(recipe => {
+    rezepte.forEach(r => {
         const li = document.createElement("li");
-        li.innerText = recipe;
+        li.innerText = r;
         ul.appendChild(li);
     });
 }
 
-// Automatisch Essensplan oder Rezepte laden, falls relevant
+document.getElementById("confirmName")?.addEventListener("click", () => {
+    const nameInput = document.getElementById("name");
+    currentName = nameInput.value.trim() || "Unbenannt";
+    alert("Name bestätigt: " + currentName);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     loadPacklist();
     loadEssensplan();
