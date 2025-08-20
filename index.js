@@ -1,44 +1,18 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
-
-// Firebase Konfiguration
+// Firebase Konfiguration (eigene Werte einfügen)
 const firebaseConfig = {
-    apiKey: "AIzaSyANnB_kd111pGYAG-YkE8_4KZ6ZE3gOK44",
-    authDomain: "campen-647d2.firebaseapp.com",
-    projectId: "campen-647d2",
-    storageBucket: "campen-647d2.appspot.com",
-    messagingSenderId: "985517833842",
-    appId: "1:985517833842:web:f2f78370df65716fbbcceb"
+  apiKey: "DEIN_API_KEY",
+  authDomain: "DEIN_PROJECT.firebaseapp.com",
+  databaseURL: "https://DEIN_PROJECT-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "DEIN_PROJECT",
+  storageBucket: "DEIN_PROJECT.appspot.com",
+  messagingSenderId: "DEIN_SENDER_ID",
+  appId: "DEIN_APP_ID"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-// Navigation
-const btnStart = document.getElementById('btn-start');
-const btnPackliste = document.getElementById('btn-packliste');
-const btnEssen = document.getElementById('btn-essen');
-const btnRezepte = document.getElementById('btn-rezepte');
-
-const startseite = document.getElementById('startseite');
-const packliste = document.getElementById('packliste');
-const essen = document.getElementById('essen');
-const rezepte = document.getElementById('rezepte');
-
-btnStart.addEventListener('click', () => showPage('startseite'));
-btnPackliste.addEventListener('click', () => showPage('packliste'));
-btnEssen.addEventListener('click', () => showPage('essen'));
-btnRezepte.addEventListener('click', () => showPage('rezepte'));
-
-function showPage(page) {
-    startseite.classList.remove('visible');
-    packliste.classList.remove('visible');
-    essen.classList.remove('visible');
-    rezepte.classList.remove('visible');
-    document.getElementById(page).classList.add('visible');
-}
-
-// Packliste Items
+// Packliste Version 1
 const packlisteItems = [
     "2–3 Zelte (je nach Größe)",
     "6 Isomatten / Luftmatratzen",
@@ -104,26 +78,28 @@ const packlisteItems = [
     "Kartenspiele, 1–2 Brettspiele, Beerpong-Set, Wikingerschach, Bluetooth-Box, Gitarre/Ukulele"
 ];
 
-// Packliste rendern
-const packlisteUl = document.getElementById('packliste-items');
+// Essensplan für 2 Tage
+const essensplan = [
+    "Tag 1 Frühstück: Haferflocken mit Pflanzenmilch, Marmelade, Obst",
+    "Tag 1 Mittagessen: Couscous-Salat mit frischem Gemüse",
+    "Tag 1 Abendessen: Gegrillte Würstchen und Gemüse",
+    "Tag 2 Frühstück: Brötchen, vegane Aufstriche, Obst",
+    "Tag 2 Mittagessen: Wraps mit Bohnen, Salat, Salsa",
+    "Tag 2 Abendessen: Eintopf / Chili"
+];
 
-packlisteItems.forEach((item, index) => {
-    const li = document.createElement('li');
+// Rezepte (Beispiel)
+const rezepte = [
+    "Couscous-Salat: 500 g Couscous, 1,5 kg Gemüse, Olivenöl, Zitrone, Gewürze",
+    "Wraps: 12 Wraps, 2 Dosen Bohnen, 500 g Salat, 1 Glas Salsa",
+    "Gegrillte Würstchen & Gemüse: 12 vegane Würstchen, 2 kg Gemüse, 1,5 kg Kartoffeln",
+    "Eintopf / Chili: 500 g Linsen, 2 Gläser Tomatenstücke, 1 kg Gemüse"
+];
 
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = 'item-' + index;
-
-    const label = document.createElement('label');
-    label.textContent = item;
-
-    const nameInput = document.createElement('input');
-    nameInput.type = 'text';
-    nameInput.placeholder = "Name";
-
-    li.appendChild(checkbox);
-    li.appendChild(label);
-    li.appendChild(nameInput);
-    packlisteUl.appendChild(li);
-
-    // Firebase Referenz
+// Allgemeine Funktion zum Laden und Speichern
+function savePacklist() {
+    const name = document.getElementById("name")?.value || "Unbenannt";
+    const items = Array.from(document.querySelectorAll("#packliste li")).map(li => ({
+        text: li.innerText.split(" - ")[0],
+        completed: li.classList.contains("completed"),
+        name: li.classList.contains("completed

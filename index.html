@@ -3,56 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Camping App</title>
-<link rel="stylesheet" href="style.css">
+    <title>Camping App - Startseite</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-    <h1>Camping Wochenende</h1>
-    <nav>
-        <button id="btn-start">Startseite</button>
-        <button id="btn-packliste">Packliste</button>
-        <button id="btn-essen">Essensplan</button>
-        <button id="btn-rezepte">Rezepte</button>
-    </nav>
-
-    <div id="startseite" class="seite visible">
-        <h2>Willkommen!</h2>
-        <p>Hier kannst du die Packliste abhaken, den Essensplan sehen und Rezepte einsehen.</p>
+    <h1>Camping App</h1>
+    <div class="buttons">
+        <button onclick="location.href='packliste.html'">Packliste</button>
+        <button onclick="location.href='essensplan.html'">Essensplan</button>
+        <button onclick="location.href='rezepte.html'">Rezepte</button>
     </div>
-
-    <div id="packliste" class="seite hidden">
-        <h2>Packliste für 6 Personen</h2>
-        <ul id="packliste-items"></ul>
-    </div>
-
-    <div id="essen" class="seite hidden">
-        <h2>Essensplan für 2 Tage</h2>
-        <ul id="essen-items">
-            <li><strong>Tag 1:</strong> Frühstück: Müsli & Obst | Mittag: Wraps | Abend: Grillen</li>
-            <li><strong>Tag 2:</strong> Frühstück: Haferflocken & Pflanzenmilch | Mittag: Couscous-Salat | Abend: Chili Eintopf</li>
-        </ul>
-    </div>
-
-    <div id="rezepte" class="seite hidden">
-        <h2>Rezepte</h2>
-        <ul id="rezepte-items">
-            <li>Nudeln mit Tomatensauce</li>
-            <li>Couscous-Salat</li>
-            <li>Veganes Chili</li>
-            <li>Gegrilltes Gemüse & Tofu</li>
-            <li>Wraps mit Bohnen & Gemüse</li>
-        </ul>
-    </div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
-<script src="index.js"></script>
 </body>
 </html>

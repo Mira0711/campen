@@ -1,54 +1,31 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
+    margin: 20px;
 }
 
-.container {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
-
-nav {
-    margin-bottom: 20px;
-}
-
-button {
-    margin-right: 10px;
-    padding: 10px 20px;
-    cursor: pointer;
-}
-
-.seite {
-    display: none;
-}
-
-.seite.visible {
-    display: block;
+h1 {
+    text-align: center;
 }
 
 ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
 }
 
 li {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
+    margin: 8px 0;
+    font-size: 16px;
 }
 
-li input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-li input[type="text"] {
-    margin-left: 10px;
-    flex: 1;
-}
-
-.strike {
+.completed {
     text-decoration: line-through;
+}
+
+input[type="text"] {
+    margin-bottom: 10px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
 }
