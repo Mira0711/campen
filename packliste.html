@@ -7,15 +7,16 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>✅ Packliste (für 6 Personen, zum Abhaken)</h1>
+  <h1>Camping Packliste für 6 Personen</h1>
 
+  <label for="name">Dein Name:</label>
+  <input type="text" id="name" placeholder="Name eingeben">
+  
   <ul id="packliste"></ul>
 
-  <a href="index.html"><button>Zurück zur Startseite</button></a>
+  <button onclick="location.href='index.html'">Startseite</button>
 
-  <script type="module">
-    import { loadPacklist } from "./js/app.js";
-    loadPacklist();
-  </script>
+  <script type="module" src="firebase.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
