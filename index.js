@@ -1,103 +1,117 @@
-// Firebase konfigurieren
-const firebaseConfig = {
-  apiKey: "AIzaSyANnB_kd111pGYAG-YkE8_4KZ6ZE3gOK44",
-  authDomain: "campen-647d2.firebaseapp.com",
-  databaseURL: "https://campen-647d2-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "campen-647d2",
-  storageBucket: "campen-647d2.appspot.com",
-  messagingSenderId: "985517833842",
-  appId: "1:985517833842:web:f2f78370df65716fbbcceb"
-};
+// Navigation
+const btnStart = document.getElementById('btn-start');
+const btnPackliste = document.getElementById('btn-packliste');
+const btnEssen = document.getElementById('btn-essen');
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+const startseite = document.getElementById('startseite');
+const packliste = document.getElementById('packliste');
+const essen = document.getElementById('essen');
 
-// Seiten wechseln
+btnStart.addEventListener('click', () => showPage('startseite'));
+btnPackliste.addEventListener('click', () => showPage('packliste'));
+btnEssen.addEventListener('click', () => showPage('essen'));
+
 function showPage(page) {
-  document.querySelectorAll('.page, #startseite').forEach(p => p.style.display = 'none');
-  document.getElementById(page).style.display = 'block';
+    startseite.classList.remove('visible');
+    packliste.classList.remove('visible');
+    essen.classList.remove('visible');
+
+    document.getElementById(page).classList.add('visible');
 }
 
-// Packliste Array
-const packliste = [
-  "2–3 Zelte",
-  "6 Isomatten / Luftmatratzen",
-  "6 Schlafsäcke & Kissen",
-  "6 Campingstühle + 1–2 Campingtische",
-  "1 Pavillon / Sonnensegel",
-  "3 Taschenlampen / Stirnlampen + Batterien",
-  "2–3 Powerbanks",
-  "Müllbeutel (mind. 10 Stück)",
-  "Erste-Hilfe-Set",
-  "2 Feuerzeuge / Streichhölzer",
-  "1 Set Mehrweg-Geschirr (6 Teller, 6 Schüsseln, 6 Becher, 6 Bestecksets)",
-  "2–3 Schneidebretter + 2 scharfe Messer",
-  "2 große Töpfe + 1 Pfanne + Grillrost",
-  "2 Kühlboxen + Kühlakkus",
-  "Küchenrolle (3 Rollen), Spülmittel + 2 Schwämme",
-  "18 l Wasser",
-  "12 l Softdrinks / Säfte",
-  "24–30 Bier",
-  "3 Flaschen Wein oder Sekt",
-  "2 Flaschen Schnaps",
-  "6 l Mischgetränke-Zutaten",
-  "1 Packung Kaffee + Filter + 1 l Pflanzenmilch",
-  "1 Packung Tee",
-  "🥗 Veganes Essen: Haferflocken, Pflanzenmilch, Marmelade, Aufstriche, Obst, Snacks",
-  "Hauptmahlzeiten: Nudeln & Sauce, Couscous-Salat, Grillen, Eintopf/Chili, Wraps",
-  "Süßes: Schokolade, Kekse, Marshmallows",
-  "🎲 Spiele & Unterhaltung: Karten, Brettspiele, Beerpong, Wikingerschach, Bluetooth-Box, Gitarre/Ukulele"
+// Packliste Items
+const packlisteItems = [
+    "2–3 Zelte (je nach Größe)",
+    "6 Isomatten / Luftmatratzen",
+    "6 Schlafsäcke & Kissen",
+    "6 Campingstühle + 1–2 Campingtische",
+    "1 Pavillon / Sonnensegel",
+    "3 Taschenlampen / Stirnlampen + Batterien",
+    "2–3 Powerbanks",
+    "Müllbeutel (mind. 10 Stück, verschiedene Sorten)",
+    "Erste-Hilfe-Set",
+    "2 Feuerzeuge / Streichhölzer",
+    "1 Set Mehrweg-Geschirr (6 Teller, 6 Schüsseln, 6 Becher, 6 Bestecksets)",
+    "2–3 Schneidebretter + 2 scharfe Messer",
+    "2 große Töpfe + 1 Pfanne + Grillrost",
+    "2 Kühlboxen + Kühlakkus",
+    "Küchenrolle (3 Rollen), Spülmittel (bio) + 2 Schwämme",
+    "18 l Wasser (3 l pro Person, z. B. 9 × 2 l Flaschen)",
+    "12 l Softdrinks / Säfte",
+    "24–30 Bier (0,33 l Flaschen/Dosen)",
+    "3 Flaschen Wein oder Sekt",
+    "2 Flaschen Schnaps (z. B. Rum + Wodka)",
+    "6 l Mischgetränke-Zutaten (Tonic, Ginger Ale, Cola)",
+    "1 Packung Kaffee + Filter + 1 l Hafer-/Sojamilch",
+    "1 Packung Tee",
+    "1,5 kg Haferflocken / Müsli",
+    "3 l Pflanzenmilch (Hafer, Soja, Mandel)",
+    "2 Gläser Marmelade",
+    "1 Glas Erdnussbutter + 1 Glas vegane Schokocreme",
+    "12 Brötchen + 2 Brote",
+    "4 Packungen vegane Aufstriche",
+    "2 kg Obst (Bananen, Äpfel, Beeren)",
+    "4 große Chips-Tüten",
+    "3 Packungen Cracker / Salzstangen",
+    "500 g Nüsse + 300 g Trockenfrüchte",
+    "1 kg Gemüse + 500 g Hummus",
+    "12 Müsliriegel",
+    "1 Packung Popcorn",
+    "1,5 kg Nudeln",
+    "3 Gläser Tomatensauce oder Pesto (vegan)",
+    "500 g Couscous / Bulgur",
+    "1,5 kg frisches Gemüse (Tomaten, Gurken, Paprika, Zwiebeln)",
+    "Olivenöl, Zitrone, Gewürze",
+    "12 vegane Würstchen",
+    "6 vegane Burger-Patties",
+    "1 kg Tofu / Seitan",
+    "2 kg Grillgemüse",
+    "1,5 kg Kartoffeln",
+    "500 g veganer Kräuterquark / Aufstrich",
+    "500 g Linsen oder 3 Dosen Kidneybohnen + 2 Dosen Mais",
+    "2 Gläser Tomatenstücke",
+    "12 Wraps",
+    "2 Dosen Bohnen",
+    "500 g Salat",
+    "1 Glas Salsa",
+    "2 Tafeln Zartbitterschokolade",
+    "2 Packungen vegane Kekse",
+    "1 Beutel vegane Marshmallows",
+    "Kartenspiele (UNO, Pokerkarten)",
+    "1–2 Brettspiele in Reisegröße",
+    "Beerpong-Set (Becher + Ball)",
+    "Flunkyball-Ball",
+    "Wikingerschach (Kubb) oder Spikeball",
+    "1 Bluetooth-Box",
+    "Gitarre / Ukulele (optional)"
 ];
 
-// Packliste rendern
-const packlistContainer = document.getElementById("packlistContainer");
+const packlisteUl = document.getElementById('packliste-items');
 
-function renderList(data) {
-  packlistContainer.innerHTML = "";
-  const username = localStorage.getItem("username") || "Gast";
+packlisteItems.forEach(item => {
+    const li = document.createElement('li');
 
-  packliste.forEach((item, index) => {
-    const div = document.createElement("div");
-    div.classList.add("list-item");
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = `item-${index}`;
+    const label = document.createElement('span');
+    label.textContent = item;
 
-    if(data && data[index] && data[index].checked) checkbox.checked = true;
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.placeholder = 'Dein Name';
 
-    const label = document.createElement("label");
-    label.htmlFor = `item-${index}`;
-    label.innerText = item;
-    if(checkbox.checked) label.classList.add("checked");
-
-    checkbox.addEventListener("change", () => {
-      label.classList.toggle("checked");
-      firebase.database().ref(`users/${username}/items/${index}`).set({
-        checked: checkbox.checked,
-        text: item
-      });
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            label.classList.add('strike');
+        } else {
+            label.classList.remove('strike');
+            nameInput.value = '';
+        }
     });
 
-    div.appendChild(checkbox);
-    div.appendChild(label);
-    packlistContainer.appendChild(div);
-  });
-}
-
-// Name speichern
-document.getElementById("username").addEventListener("change", () => {
-  localStorage.setItem("username", document.getElementById("username").value);
-  loadList();
+    li.appendChild(checkbox);
+    li.appendChild(label);
+    li.appendChild(nameInput);
+    packlisteUl.appendChild(li);
 });
-
-// Liste laden
-function loadList() {
-  const username = localStorage.getItem("username") || "Gast";
-  firebase.database().ref(`users/${username}/items`).on('value', snapshot => {
-    renderList(snapshot.val());
-  });
-}
-
-// Initial load
-loadList();
