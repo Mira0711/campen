@@ -12,7 +12,7 @@ h1 {
 ul {
   list-style: none;
   padding: 0;
-  max-width: 400px;
+  max-width: 500px;
   margin: 20px auto;
 }
 
@@ -23,6 +23,9 @@ li {
   border-radius: 8px;
   cursor: pointer;
   transition: 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 li:hover {
@@ -32,4 +35,54 @@ li:hover {
 li.checked {
   text-decoration: line-through;
   opacity: 0.6;
+}
+
+#nameInputContainer {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#userName {
+  padding: 8px;
+  width: 200px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 90%;
+  max-width: 700px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  background-color: #2e8b57;
+  color: white;
+}
+
+.nav-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.nav-buttons button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  background-color: #2e8b57;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-buttons button:hover {
+  background-color: #3cb371;
 }
