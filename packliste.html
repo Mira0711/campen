@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Packliste</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>✅ Packliste (für 6 Personen, zum Abhaken)</h1>
+
+  <p class="hint">Hake einen Punkt ab und trage deinen Namen ein – alles wird live gespeichert.</p>
+
+  <ul id="packliste" class="list"></ul>
+
+  <div class="nav">
+    <a class="btn" href="index.html">Startseite</a>
+  </div>
+
+  <!-- Firebase compat SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <!-- Initialisierung + Logik -->
+  <script src="firebase.js"></script>
+  <script src="packliste.js"></script>
+</body>
+</html>
