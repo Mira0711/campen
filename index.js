@@ -1,4 +1,4 @@
-// Firebase Konfiguration (eigene Werte einfügen)
+// Firebase Konfiguration
 const firebaseConfig = {
   apiKey: "DEIN_API_KEY",
   authDomain: "DEIN_PROJECT.firebaseapp.com",
@@ -88,18 +88,69 @@ const essensplan = [
     "Tag 2 Abendessen: Eintopf / Chili"
 ];
 
-// Rezepte (Beispiel)
+// Rezepte
 const rezepte = [
     "Couscous-Salat: 500 g Couscous, 1,5 kg Gemüse, Olivenöl, Zitrone, Gewürze",
     "Wraps: 12 Wraps, 2 Dosen Bohnen, 500 g Salat, 1 Glas Salsa",
     "Gegrillte Würstchen & Gemüse: 12 vegane Würstchen, 2 kg Gemüse, 1,5 kg Kartoffeln",
-    "Eintopf / Chili: 500 g Linsen, 2 Gläser Tomatenstücke, 1 kg Gemüse"
+    "Eintopf / Chili: 500 g Linsen, 3 Dosen Kidneybohnen, 2 Dosen Mais, 2 Gläser Tomatenstücke, Gewürze"
 ];
 
-// Allgemeine Funktion zum Laden und Speichern
-function savePacklist() {
-    const name = document.getElementById("name")?.value || "Unbenannt";
-    const items = Array.from(document.querySelectorAll("#packliste li")).map(li => ({
-        text: li.innerText.split(" - ")[0],
-        completed: li.classList.contains("completed"),
-        name: li.classList.contains("completed
+// Packliste laden
+if(document.getElementById("packliste")){
+    const listEl = document.getElementById("packliste");
+    const nameInput = document.getElementById("name");
+
+    packlisteItems.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        li.onclick = () => toggleItem(index, li, nameInput.value);
+        listEl.appendChild(li);
+    });
+
+    function toggleItem(index, li, name){
+        if(!name) {
+            alert("Bitte zuerst deinen Namen eingeben!");
+            return;
+        }
+        const completed = li.classList.toggle("completed");
+        // Firebase speichern
+        db.ref('packliste/' + name + '/' + index).set({item: packlisteItems[index], completed});
+    }
+
+    // Firebase laden
+    nameInput.addEventListener("blur", () => {
+        const name = nameInput.value;
+        if(!name) return;
+        db.ref('packliste/' + name).once("value", snapshot => {
+            const data = snapshot.val();
+            if(data){
+                Object.keys(data).forEach(i => {
+                    if(data[i].completed){
+                        listEl.children[i].classList.add("completed");
+                    }
+                });
+            }
+        });
+    });
+}
+
+// Essensplan laden
+if(document.getElementById("essensplan")){
+    const listEl = document.getElementById("essensplan");
+    essensplan.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        listEl.appendChild(li);
+    });
+}
+
+// Rezepte laden
+if(document.getElementById("rezepte")){
+    const listEl = document.getElementById("rezepte");
+    rezepte.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        listEl.appendChild(li);
+    });
+}
