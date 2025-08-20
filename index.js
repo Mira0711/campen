@@ -1,7 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get, set, onValue } from "firebase/database";
+// Firebase SDK importieren
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
-// 1️⃣ Firebase konfigurieren
+// 🔹 Firebase-Konfiguration
 const firebaseConfig = {
   apiKey: "AIzaSyANnB_kd111pGYAG-YkE8_4KZ6ZE3gOK44",
   authDomain: "campen-647d2.firebaseapp.com",
@@ -11,11 +12,12 @@ const firebaseConfig = {
   messagingSenderId: "985517833842",
   appId: "1:985517833842:web:f2f78370df65716fbbcceb"
 };
-// 2️⃣ Firebase initialisieren
+
+// 🔹 Firebase initialisieren
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// 3️⃣ Packliste
+// 🔹 Packliste
 const items = [
   "Zelt",
   "Schlafsack",
@@ -27,22 +29,25 @@ const items = [
   "Spiele (Karten, Würfel, etc.)"
 ];
 
+// 🔹 UL Element auswählen
 const ul = document.getElementById("packliste");
 
-// 4️⃣ Items in Firebase speichern, falls noch nicht vorhanden
+// 🔹 Items in Firebase speichern / anzeigen
 items.forEach(item => {
-  const itemRef = ref(db, "packliste/" + item.replace(/\s/g, "_"));
+  const key = item.replace(/\s/g, "_"); // Firebase Key
+  const itemRef = ref(db, "packliste/" + key);
 
-  // Echtzeit-Daten aus Firebase beobachten
+  // Echtzeit Listener
   onValue(itemRef, snapshot => {
-    let li = document.getElementById(item.replace(/\s/g, "_"));
+    let li = document.getElementById(key);
     const checked = snapshot.exists() ? snapshot.val() : false;
 
     if (!li) {
       li = document.createElement("li");
       li.textContent = item;
-      li.id = item.replace(/\s/g, "_");
+      li.id = key;
 
+      // Klick Event zum Abhaken
       li.addEventListener("click", () => {
         const newValue = !li.classList.contains("checked");
         set(itemRef, newValue);
@@ -54,4 +59,3 @@ items.forEach(item => {
     li.classList.toggle("checked", checked);
   });
 });
-
