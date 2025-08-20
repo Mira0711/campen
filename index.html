@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camping-App</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Camping-App</h1>
+
+  <div id="startseite">
+    <input type="text" id="username" placeholder="Dein Name">
+    <button onclick="showPage('packliste')">Packliste</button>
+    <button onclick="showPage('essensplan')">Essensplan</button>
+    <button onclick="showPage('rezepte')">Rezepte</button>
+  </div>
+
+  <div id="packliste" class="page">
+    <h2>Packliste für 6 Personen</h2>
+    <div id="packlistContainer"></div>
+    <button onclick="showPage('startseite')">Zurück</button>
+  </div>
+
+  <div id="essensplan" class="page">
+    <h2>Essensplan</h2>
+    <div id="planContent">
+      <h3>Frühstück</h3>
+      <ul>
+        <li>Haferflocken / Müsli + Pflanzenmilch</li>
+        <li>Marmelade, vegane Aufstriche, Obst</li>
+      </ul>
+      <h3>Mittag & Abend</h3>
+      <ul>
+        <li>Nudeln & vegane Sauce</li>
+        <li>Couscous-Salat mit frischem Gemüse</li>
+        <li>Gegrilltes Gemüse, vegane Würstchen/Burger</li>
+      </ul>
+      <h3>Snacks & Süßes</h3>
+      <ul>
+        <li>Chips, Nüsse, Müsliriegel, vegane Kekse</li>
+        <li>Vegane Marshmallows, Schokolade</li>
+      </ul>
+    </div>
+    <button onclick="showPage('startseite')">Zurück</button>
+  </div>
+
+  <div id="rezepte" class="page">
+    <h2>Rezepte</h2>
+    <div id="recipeContent">
+      <h3>Nudeln & vegane Sauce</h3>
+      <p>Nudeln nach Packungsanweisung kochen. Sauce erhitzen und über die Nudeln geben.</p>
+      <h3>Couscous-Salat</h3>
+      <p>Couscous quellen lassen, Gemüse klein schneiden, Olivenöl, Zitrone, Gewürze dazu.</p>
+      <h3>Gegrilltes Gemüse & Tofu</h3>
+      <p>Gemüse und Tofu marinieren, auf den Grill oder in die Pfanne geben, bis alles leicht gebräunt ist.</p>
+    </div>
+    <button onclick="showPage('startseite')">Zurück</button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="index.js" defer></script>
+</body>
+</html>
